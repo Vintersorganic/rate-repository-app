@@ -8,6 +8,7 @@ export const AUTHENTICATE = gql`
       username
       id
     }
+    accessToken
   }
 }
 
