@@ -1,6 +1,14 @@
-import { View, StyleSheet, Image } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Image,
+  Pressable,
+  TouchableOpacity,
+} from "react-native";
 import Text from "./Text";
 import theme from "../theme";
+import * as Linking from "expo-linking";
+import { useNavigate } from "react-router-native";
 
 const fixedNumber = (num) => {
   return num > 1000 ? (num / 1000).toFixed(1) + "k" : num;
@@ -32,14 +40,60 @@ const styles = StyleSheet.create({
   bottom: {
     flexDirection: "row",
     justifyContent: "space-around",
-    marginBottom: 9
+    marginBottom: 9,
   },
   bottomTextContainer: {
-    alignItems: 'center',
-  }
+    alignItems: "center",
+  },
+  githubButton: {
+    padding: 15,
+    margin: 10,
+    backgroundColor: theme.colors.primary,
+    borderRadius: 4,
+    alignItems: "center",
+    justifyContent: "center",
+  },
 });
 
+const RepositoryItem = ({ item, linkButton }) => {
+  const githubUrl = () => Linking.openURL(item.url);
+   
+  const navigate = useNavigate()
+
+  const handleRepository = () =>{
+    navigate('/' + item.id)
+  }
+
+  return (
+    <Pressable onPress={handleRepository}>
+      <View style={styles.container}>
+        <TopPart
+          uri={item.ownerAvatarUrl}
+          name={item.fullName}
+          description={item.description}
+          language={item.language}
+        />
+        <BottomPart
+          stargazersCount={item.stargazersCount}
+          forksCount={item.forksCount}
+          reviewCount={item.reviewCount}
+          ratingAverage={item.ratingAverage}
+        />
+        {!linkButton && (
+          <TouchableOpacity style={styles.githubButton} onPress={githubUrl}>
+            <Text color="white" fontWeight="bold" fontSize="subheading">
+              Open in GitHub
+            </Text>
+          </TouchableOpacity>
+        )}
+      </View>
+    </Pressable>
+  );
+};
+
 const TopPart = ({ uri, name, description, language }) => {
+ 
+
   return (
     <View style={styles.top}>
       <Image
@@ -61,7 +115,6 @@ const TopPart = ({ uri, name, description, language }) => {
   );
 };
 
-
 const BottomPart = ({
   stargazersCount,
   forksCount,
@@ -70,40 +123,23 @@ const BottomPart = ({
 }) => {
   return (
     <View style={styles.bottom}>
-      <BottomPartContainer content={stargazersCount} text="Stars"/>
-      <BottomPartContainer content={forksCount} text="Forks"/>
-      <BottomPartContainer content={reviewCount} text="Reviews"/>
-      <BottomPartContainer content={ratingAverage} text="Rating"/>
+      <BottomPartContainer content={stargazersCount} text="Stars" />
+      <BottomPartContainer content={forksCount} text="Forks" />
+      <BottomPartContainer content={reviewCount} text="Reviews" />
+      <BottomPartContainer content={ratingAverage} text="Rating" />
     </View>
   );
 };
 
-const BottomPartContainer = ({content, text}) => {
-    return (
-      <View style={styles.bottomTextContainer}>
-        <Text fontWeight="bold">{fixedNumber(content)}</Text>
-        <Text color="textSecondary">{text}</Text>
-      </View>
-    )
-  }
-
-const RepositoryItem = ({ item }) => {
+const BottomPartContainer = ({ content, text }) => {
   return (
-    <View style={styles.container}>
-      <TopPart
-        uri={item.ownerAvatarUrl}
-        name={item.fullName}
-        description={item.description}
-        language={item.language}
-      />
-      <BottomPart
-        stargazersCount={item.stargazersCount}
-        forksCount={item.forksCount}
-        reviewCount={item.reviewCount}
-        ratingAverage={item.ratingAverage}
-      />
+    <View style={styles.bottomTextContainer}>
+      <Text fontWeight="bold">{fixedNumber(content)}</Text>
+      <Text color="textSecondary">{text}</Text>
     </View>
   );
 };
+
+
 
 export default RepositoryItem;

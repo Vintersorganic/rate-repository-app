@@ -1,36 +1,54 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const GET_REPOSITORIES = gql`
   query {
-  repositories {
-    edges {
-      node {
-        id
-        name
-        ownerName
-        createdAt
-        fullName
-        reviewCount
-        ratingAverage
-        forksCount
-        stargazersCount
-        description
-        language
-        ownerAvatarUrl
+    repositories {
+      edges {
+        node {
+          id
+          name
+          ownerName
+          createdAt
+          fullName
+          reviewCount
+          ratingAverage
+          forksCount
+          stargazersCount
+          description
+          language
+          ownerAvatarUrl,
+          url
+        }
+        cursor
       }
-      cursor
     }
   }
-}
 `;
 
-export const ME = gql `
+export const ME = gql`
   query {
-  me {
-    username
-    id
+    me {
+      username
+      id
+    }
   }
-}
-`
+`;
 
-// other queries...
+export const REPOSITORY = gql`
+  query {
+    repository(id: $repositoryId) {
+      id
+      ownerName
+      createdAt
+      fullName
+      reviewCount
+      ratingAverage
+      forksCount
+      stargazersCount
+      description
+      language
+      ownerAvatarUrl
+      url
+    }
+  }
+`;
