@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const GET_REPOSITORIES = gql`
-  query {
-    repositories {
+  query Repositories($orderDirection: OrderDirection, $orderBy: AllRepositoriesOrderBy) {
+    repositories(orderDirection: $orderDirection, orderBy: $orderBy) {
       edges {
         node {
           id
@@ -35,8 +35,8 @@ export const ME = gql`
 `;
 
 export const REPOSITORY = gql`
-  query {
-    repository(id: $repositoryId) {
+  query ($id: ID!){
+    repository(id: $id) {
       id
       ownerName
       createdAt
@@ -49,6 +49,21 @@ export const REPOSITORY = gql`
       language
       ownerAvatarUrl
       url
+      reviews {
+      totalCount
+      edges {
+        node {
+          id
+          text
+          rating
+          createdAt
+          user {
+            username
+            id
+          }
+        }
+      }
+    }
     }
   }
 `;

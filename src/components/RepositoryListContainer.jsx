@@ -1,33 +1,26 @@
+import { useState } from "react";
+import { FlatList, View, StyleSheet, Text } from "react-native";
+import ItemSeparator from "./ItemSeparator";
+import PickerComponent from "./PickerComponent";
+import RepositoryItem from "./RepositoryItem";
 
-import { FlatList, View, StyleSheet, Text } from 'react-native';
-import RepositoryItem from './RepositoryItem';
 
-const styles = StyleSheet.create({
-  separator: {
-    height: 10,
-  },
-});
-
-const ItemSeparator = () => <View style={styles.separator} />;
-
-const RepositoryListContainer = ({repositories, loading}) => {
-
+const RepositoryListContainer = ({ repositories, loading, sortOption, setSortOption }) => {
   // Get the nodes from the edges array
   const repositoryNodes = repositories
-    ? repositories.edges.map(edge => edge.node)
+    ? repositories.edges.map((edge) => edge.node)
     : [];
 
-
   return (
-    <View testID="repositoryItem" style={{flex:1}}>
-      {loading && <Text>Loading...</Text> }
-     <FlatList
-      data={repositoryNodes}
-      ItemSeparatorComponent={ItemSeparator}
-      renderItem={RepositoryItem}
-      keyExtractor={item => item.id}
-     
-    /> 
+    <View testID="repositoryItem" style={{ flex: 1 }}>
+      {loading && <Text>Loading...</Text>}
+      <FlatList
+        data={repositoryNodes}
+        ItemSeparatorComponent={ItemSeparator}
+        renderItem={({ item }) => <RepositoryItem item={item} />}
+        keyExtractor={(item) => item.id}
+        ListHeaderComponent={<PickerComponent sortOption={sortOption} setSortOption={setSortOption}/>}
+      />
     </View>
   );
 };

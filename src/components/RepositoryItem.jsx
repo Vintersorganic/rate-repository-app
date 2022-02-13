@@ -55,44 +55,9 @@ const styles = StyleSheet.create({
   },
 });
 
-const RepositoryItem = ({ item, linkButton }) => {
-  const githubUrl = () => Linking.openURL(item.url);
-   
-  const navigate = useNavigate()
-
-  const handleRepository = () =>{
-    navigate('/' + item.id)
-  }
-
-  return (
-    <Pressable onPress={handleRepository}>
-      <View style={styles.container}>
-        <TopPart
-          uri={item.ownerAvatarUrl}
-          name={item.fullName}
-          description={item.description}
-          language={item.language}
-        />
-        <BottomPart
-          stargazersCount={item.stargazersCount}
-          forksCount={item.forksCount}
-          reviewCount={item.reviewCount}
-          ratingAverage={item.ratingAverage}
-        />
-        {!linkButton && (
-          <TouchableOpacity style={styles.githubButton} onPress={githubUrl}>
-            <Text color="white" fontWeight="bold" fontSize="subheading">
-              Open in GitHub
-            </Text>
-          </TouchableOpacity>
-        )}
-      </View>
-    </Pressable>
-  );
-};
-
 const TopPart = ({ uri, name, description, language }) => {
- 
+  
+  const navigate = useNavigate()
 
   return (
     <View style={styles.top}>
@@ -140,6 +105,40 @@ const BottomPartContainer = ({ content, text }) => {
   );
 };
 
+const RepositoryItem = ({ item, linkButton }) => {
+  const githubUrl = () => Linking.openURL(item.url);
 
+  const navigate = useNavigate()
+
+  const handleRepository = () =>{
+    navigate('/repository/' + item.id)
+  }
+
+  return (
+    <Pressable onPress={handleRepository}>
+      <View style={styles.container}>
+        <TopPart
+          uri={item.ownerAvatarUrl}
+          name={item.fullName}
+          description={item.description}
+          language={item.language}
+        />
+        <BottomPart
+          stargazersCount={item.stargazersCount}
+          forksCount={item.forksCount}
+          reviewCount={item.reviewCount}
+          ratingAverage={item.ratingAverage}
+        />
+        {linkButton && (
+          <TouchableOpacity style={styles.githubButton} onPress={githubUrl}>
+            <Text color="white" fontWeight="bold" fontSize="subheading">
+              Open in GitHub
+            </Text>
+          </TouchableOpacity>
+        )}
+      </View>
+    </Pressable>
+  );
+};
 
 export default RepositoryItem;

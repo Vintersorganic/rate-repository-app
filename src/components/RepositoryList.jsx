@@ -1,13 +1,23 @@
-
+import { useState } from "react";
 import useRepositories from "../hooks/useRepositories";
 import RepositoryListContainer from "./RepositoryListContainer";
 
-useRepositories
-
 const RepositoryList = () => {
-  const { repositories, loading } = useRepositories();
+  const [sortOption, setSortOption] = useState({
+    orderDirection: "DESC",
+    orderBy: "CREATED_AT",
+  });
+  
+  const { repositories, loading } = useRepositories(sortOption);
 
-  return <RepositoryListContainer repositories={repositories} loading={loading}/>;
+  return (
+    <RepositoryListContainer
+      repositories={repositories}
+      loading={loading}
+      sortOption={sortOption}
+      setSortOption={setSortOption}
+    />
+  );
 };
 
 export default RepositoryList;
