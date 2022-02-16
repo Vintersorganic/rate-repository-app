@@ -43,7 +43,10 @@ const ReviewItem = ({ review }) => {
 
 const SingleRepository = () => {
   const params = useParams();
-  const { repository, loading } = useRepository(params.id);
+  const { repository, loading, fetchMore } = useRepository({
+    id: params.id,
+    first: 5
+  });
 
   const repositoryNodes = repository
     ? repository.reviews.edges.map((edge) => edge.node)
@@ -62,6 +65,8 @@ const SingleRepository = () => {
         <RepositoryInfo repository={repository} loading={loading} />
       )}
       ItemSeparatorComponent={ItemSeparator}
+      onEndReached={() => fetchMore()}
+      onEndReachedThreshold={0.5}
     />
   );
 };

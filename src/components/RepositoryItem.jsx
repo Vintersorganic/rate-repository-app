@@ -57,7 +57,6 @@ const styles = StyleSheet.create({
 
 const TopPart = ({ uri, name, description, language }) => {
   
-  const navigate = useNavigate()
 
   return (
     <View style={styles.top}>

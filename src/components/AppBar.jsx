@@ -32,6 +32,7 @@ const AppBar = () => {
       <ScrollView horizontal>
         <AppBarTab text="Repositories" url="/" />
         {authUser && <AppBarTab text="Create a Review" url="/review" />}
+        {authUser && <AppBarTab text="My Reviews" url="/myreviews" />}
         {authUser ? (
           <AppBarTab text="Sign Out" url="/" />
         ) : (
